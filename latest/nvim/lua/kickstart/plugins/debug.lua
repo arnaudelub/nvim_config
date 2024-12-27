@@ -159,25 +159,22 @@ return {
         stopOnEntry = false,
       },
     }
-    dap.adapters.codelldb = {
-      type = 'server',
-      port = '${port}',
-      executable = {
-        command = '/Users/adelubac/.local/share/nvim/mason/bin/codelldb',
-        args = { '--port', '${port}' },
-      },
+    dap.adapters.dart = {
+      type = 'executable',
+      command = 'dart',
+      -- This command was introduced upstream in https://github.com/dart-lang/sdk/commit/b68ccc9a
+      args = { 'debug_adapter' },
     }
-
-    dap.configurations.rust = {
+    dap.configurations.dart = {
       {
-        name = 'Launch file',
-        type = 'codelldb',
+        type = 'dart',
         request = 'launch',
-        program = function()
-          return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-        end,
+        name = 'Launch Dart Program',
+        -- The nvim-dap plugin populates this variable with the filename of the current buffer
+        program = '${file}',
+        -- The nvim-dap plugin populates this variable with the editor's current working directory
         cwd = '${workspaceFolder}',
-        stopOnEntry = false,
+        args = { '--help' }, -- Note for Dart apps this is args, for Flutter apps toolArgs
       },
     }
 
